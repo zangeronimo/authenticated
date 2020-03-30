@@ -1,2 +1,2 @@
 # authenticated
-A plataform to gerencie your projects and users, send a username and password and get a JWT
+A platform to manager your projects and users, sending a username and password and getting a JWT
