@@ -4,5 +4,5 @@ go 1.14
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	honnef.co/go/tools v0.0.1-2020.1.3 // indirect
+	github.com/jinzhu/gorm v1.9.12 // indirect
 )

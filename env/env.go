@@ -6,4 +6,5 @@ import "os"
 func New() {
 	os.Setenv("BASIC_USERNAME", "test")
 	os.Setenv("BASIC_PASSWORD", "test")
+	os.Setenv("SQLITE_BASE", "test.db")
 }

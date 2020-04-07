@@ -11,13 +11,49 @@ import (
 	"github.com/zangeronimo/authenticated/env"
 
 	"github.com/dgrijalva/jwt-go"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 //SAMPLESECRET A secret frase
 const SAMPLESECRET string = "Hello JWT"
 
+type User struct {
+	gorm.Model
+	Code  string
+	Price uint
+	Email string `gorm:"type:varchar(100);unique_index"`
+}
+
 func main() {
 	env.New()
+
+	database := os.Getenv("SQLITE_BASE")
+	db, err := gorm.Open("sqlite3", database)
+	if err != nil {
+		panic("failed to connect database")
+	}
+	defer db.Close()
+
+	// Migrate the schema
+	db.AutoMigrate(&User{})
+
+	// Create
+	//db.Create(&User{Code: "L1213", Price: 1000, Email: "luciano2@tudolinux.com.br"})
+
+	// Read
+	var user User
+	//db.First(&user, 1)                   // find product with id 1
+	db.First(&user, "id = ?", "6") // find product with code L1212
+
+	// Update - update product´s price to 2000
+	//db.Model(&user).Update("Price", 2000)
+
+	// Delete - delete product
+	//db.Delete(&user)
+
+	fmt.Println(user.Email)
 
 	http.HandleFunc("/auth", basicAuth)
 	http.ListenAndServe(":4001", nil)
