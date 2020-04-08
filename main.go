@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/zangeronimo/authenticated/env"
-	"github.com/zangeronimo/database/user"
+	"github.com/zangeronimo/authenticated/models"
 
 	"github.com/dgrijalva/jwt-go"
 
@@ -31,15 +31,15 @@ func main() {
 	defer db.Close()
 
 	// Migrate the schema
-	db.AutoMigrate(user.New())
+	db.AutoMigrate(&models.User{})
 
 	// Create
-	//db.Create(&User{Code: "L1213", Price: 1000, Email: "luciano2@tudolinux.com.br"})
+	db.Create(&models.User{Code: "L1212", Price: 1000, Email: "luciano@tudolinux.com.br"})
 
 	// Read
-	var user user.User
+	var user models.User
 	//db.First(&user, 1)                   // find product with id 1
-	db.First(&user, "id = ?", "6") // find product with code L1212
+	db.First(&user, "Code = ?", "L1212") // find product with code L1212
 
 	// Update - update product´s price to 2000
 	//db.Model(&user).Update("Price", 2000)
