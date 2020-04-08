@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/zangeronimo/authenticated/env"
+	"github.com/zangeronimo/database/user"
 
 	"github.com/dgrijalva/jwt-go"
 
@@ -18,13 +19,6 @@ import (
 
 //SAMPLESECRET A secret frase
 const SAMPLESECRET string = "Hello JWT"
-
-type User struct {
-	gorm.Model
-	Code  string
-	Price uint
-	Email string `gorm:"type:varchar(100);unique_index"`
-}
 
 func main() {
 	env.New()
@@ -37,13 +31,13 @@ func main() {
 	defer db.Close()
 
 	// Migrate the schema
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(user.New())
 
 	// Create
 	//db.Create(&User{Code: "L1213", Price: 1000, Email: "luciano2@tudolinux.com.br"})
 
 	// Read
-	var user User
+	var user user.User
 	//db.First(&user, 1)                   // find product with id 1
 	db.First(&user, "id = ?", "6") // find product with code L1212
 
