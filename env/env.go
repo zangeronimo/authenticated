@@ -6,5 +6,9 @@ import "os"
 func New() {
 	os.Setenv("BASIC_USERNAME", "test")
 	os.Setenv("BASIC_PASSWORD", "test")
-	os.Setenv("SQLITE_BASE", "test.db")
+
+	// MySQL configurations
+	os.Setenv("DB_USER", "authenticated")
+	os.Setenv("DB_PASS", "123456")
+	os.Setenv("DB_BASE", "authenticated")
 }

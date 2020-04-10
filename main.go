@@ -14,7 +14,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 //SAMPLESECRET A secret frase
@@ -23,31 +23,35 @@ const SAMPLESECRET string = "Hello JWT"
 func main() {
 	env.New()
 
-	database := os.Getenv("SQLITE_BASE")
-	db, err := gorm.Open("sqlite3", database)
+	dbBase := os.Getenv("DB_BASE")
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	db, err := gorm.Open("mysql", fmt.Sprintf("%v:%v@/%v?charset=utf8&parseTime=True&loc=Local", dbUser, dbPass, dbBase))
 	if err != nil {
 		panic("failed to connect database")
 	}
 	defer db.Close()
 
 	// Migrate the schema
+	db.AutoMigrate(&models.Company{})
+	db.AutoMigrate(&models.Product{})
 	db.AutoMigrate(&models.User{})
 
 	// Create
-	db.Create(&models.User{Code: "L1212", Price: 1000, Email: "luciano@tudolinux.com.br"})
+	db.Create(&models.User{Name: "Luciano Zangeronimo", Email: "zangeronimo@tudolinux.com.br", Products: []models.Product{{Title: "Authenticated"}}})
 
 	// Read
 	var user models.User
-	//db.First(&user, 1)                   // find product with id 1
-	db.First(&user, "Code = ?", "L1212") // find product with code L1212
+	db.First(&user, 1) // find user with id 1
+	//db.First(&user, "Name = ?", "Luciano") // find user with name is Luciano
 
 	// Update - update product´s price to 2000
-	//db.Model(&user).Update("Price", 2000)
+	//db.Model(&user).Update("Products", []models.Product{{Title: "Authenticated"}})
 
 	// Delete - delete product
 	//db.Delete(&user)
 
-	fmt.Println(user.Email)
+	fmt.Println(user.Products)
 
 	http.HandleFunc("/auth", basicAuth)
 	http.ListenAndServe(":4001", nil)
