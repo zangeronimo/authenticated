@@ -1,4 +1,4 @@
-// Package env, rename env_exemplo.go file to env.go and change the params values if your informations.
+// Package env, rename env_example.go file to env.go and change the params values if your informations.
 package env
 
 import "os"
