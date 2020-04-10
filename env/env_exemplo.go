@@ -1,0 +1,15 @@
+// Package env, rename env_exemplo.go file to env.go and change the params values if your informations.
+package env
+
+import "os"
+
+//New start function for configure all environment constants
+func New() {
+	os.Setenv("BASIC_USERNAME", "xxx")
+	os.Setenv("BASIC_PASSWORD", "xxx")
+
+	// MySQL configurations
+	os.Setenv("DB_USER", "xxx")
+	os.Setenv("DB_PASS", "xxx")
+	os.Setenv("DB_BASE", "xxx")
+}
