@@ -1,3 +1,4 @@
+// pachage env - Global env configurations
 package env
 
 import "os"
