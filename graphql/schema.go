@@ -2,6 +2,18 @@ package graphql
 
 import "github.com/graphql-go/graphql"
 
+var companyType = graphql.NewObject((graphql.ObjectConfig{
+	Name: "Company",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.ID,
+		},
+		"name": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+}))
+
 // define custom GraphQL ObjectType `todoType` for our Golang struct `Todo`
 // Note that
 // - the fields in our todoType maps with the json tags for the fields in our struct

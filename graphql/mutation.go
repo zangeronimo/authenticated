@@ -1,11 +1,32 @@
 package graphql
 
-import "github.com/graphql-go/graphql"
+import (
+	"github.com/graphql-go/graphql"
+)
 
 // root mutation
 var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootMutation",
 	Fields: graphql.Fields{
+
+		"createCompany": &graphql.Field{
+			Type:        companyType, // the return type for this field
+			Description: "Create new company",
+			Args: graphql.FieldConfigArgument{
+				"name": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+
+				// marshall and cast the argument value
+				name, _ := params.Args["name"].(string)
+
+				// perform mutation operation here
+				// for e.g. create a Todo and save to DB.
+				return addCompany(name)
+			},
+		},
 		/*
 			curl -g 'http://localhost:8080/graphql?query=mutation+_{createTodo(text:"My+new+todo"){id,text,done}}'
 		*/

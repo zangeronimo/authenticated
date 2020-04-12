@@ -3,6 +3,7 @@ package graphql
 import (
 	"math/rand"
 	"time"
+	"strconv"
 
 	"github.com/graphql-go/graphql"
 )
@@ -40,6 +41,38 @@ func charge() {
 var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
+
+		// List all companies
+		"companies": &graphql.Field{
+			Type:        graphql.NewList(companyType),
+			Description: "List of companies",
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				return getAllCompanies()
+			},
+		},
+
+		// Return a specific company
+		
+		"company": &graphql.Field{
+			Type:        companyType,
+			Description: "Get single company",
+			Args: graphql.FieldConfigArgument{
+				"id": &graphql.ArgumentConfig{
+					Type: graphql.ID,
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				idQuery, isOK := params.Args["id"].(string)
+				if isOK {
+					id, err := strconv.Atoi(idQuery)
+					if err != nil {
+						return nil, err
+					}
+					return getOneCompany(uint(id))
+				}
+				return nil, nil
+			},
+		},
 
 		/*
 		   curl -g 'http://localhost:8080/graphql?query={todo(id:"b"){id,text,done}}'

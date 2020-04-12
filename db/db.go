@@ -14,10 +14,11 @@ var (
 
 // Company struct
 type Company struct {
-	gorm.Model
-	Name     string `gorm:"type:varchar(100)"`
+	ID       uint   ` json:"id" gorm:"primary_key"`
+	Name     string ` json:"name" gorm:"type:varchar(100)"`
 	Products []Product
 	Users    []User
+	gorm.Model
 }
 
 // Product struct
