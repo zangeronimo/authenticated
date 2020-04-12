@@ -1,10 +1,12 @@
-// Package env, rename env_example.go file to env.go and change the params values if your informations.
+// Package env - rename env_example file to env.go and change the params values if your informations.
 package env
 
 import "os"
 
 //New start function for configure all environment constants
 func New() {
+	os.Setenv("PRODUCTION_MODE", "false") // true or false
+
 	os.Setenv("BASIC_USERNAME", "xxx")
 	os.Setenv("BASIC_PASSWORD", "xxx")
 

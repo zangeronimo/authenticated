@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/zangeronimo/authenticated/db"
 	"github.com/zangeronimo/authenticated/env"
-	"github.com/zangeronimo/authenticated/models"
+	gql "github.com/zangeronimo/authenticated/graphql"
 
 	"github.com/dgrijalva/jwt-go"
 
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
@@ -21,40 +21,37 @@ import (
 const SAMPLESECRET string = "Hello JWT"
 
 func main() {
+	// Start env package with global configurations
 	env.New()
 
-	dbBase := os.Getenv("DB_BASE")
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASS")
-	db, err := gorm.Open("mysql", fmt.Sprintf("%v:%v@/%v?charset=utf8&parseTime=True&loc=Local", dbUser, dbPass, dbBase))
-	if err != nil {
-		panic("failed to connect database")
-	}
-	defer db.Close()
+	// Start db package to start migration bases
+	db.New()
 
-	// Migrate the schema
-	db.AutoMigrate(&models.Company{})
-	db.AutoMigrate(&models.Product{})
-	db.AutoMigrate(&models.User{})
+	//GRAPHQL Server
+	gql.New()
 
+	fmt.Println("The server is running on port 4001")
+	http.ListenAndServe(":4001", nil)
+
+	//GORM EXAMPLE
 	// Create
-	db.Create(&models.User{Name: "Luciano Zangeronimo", Email: "zangeronimo@tudolinux.com.br", Products: []models.Product{{Title: "Authenticated"}}})
+	//dbase.Create(&db.User{Name: "Luciano Zangeronimo", Email: "zangeronimo@tudolinux.com.br", Products: []db.Product{{Title: "Authenticated"}}})
 
 	// Read
-	var user models.User
-	db.First(&user, 1) // find user with id 1
-	//db.First(&user, "Name = ?", "Luciano") // find user with name is Luciano
+	//var user db.User
+	//dbase.First(&user, 1) // find user with id 1
+	//dbase.First(&user, "Name = ?", "Luciano") // find user with name is Luciano
 
 	// Update - update product´s price to 2000
-	//db.Model(&user).Update("Products", []models.Product{{Title: "Authenticated"}})
+	//dbase.Model(&user).Update("Products", []db.Product{{Title: "Authenticated"}})
 
 	// Delete - delete product
-	//db.Delete(&user)
+	//dbase.Delete(&user)
 
-	fmt.Println(user.Products)
+	//fmt.Println(user.Name)
 
-	http.HandleFunc("/auth", basicAuth)
-	http.ListenAndServe(":4001", nil)
+	//http.HandleFunc("/auth", basicAuth)
+	//http.ListenAndServe(":4001", nil)
 }
 
 func basicAuth(w http.ResponseWriter, r *http.Request) {
