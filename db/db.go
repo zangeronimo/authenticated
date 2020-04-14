@@ -14,8 +14,10 @@ var (
 
 // Company struct
 type Company struct {
-	ID       uint   ` json:"id" gorm:"primary_key"`
+	ID       uint   ` json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Name     string ` json:"name" gorm:"type:varchar(100)"`
+	Email    string ` json:"email" gorm:"type:varchar(100);unique_index;not null"`
+	Phone    string ` json:"phone" gorm:"type:varchar(30)"`
 	Products []Product
 	Users    []User
 	gorm.Model

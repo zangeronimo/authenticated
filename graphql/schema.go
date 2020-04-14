@@ -11,6 +11,12 @@ var companyType = graphql.NewObject((graphql.ObjectConfig{
 		"name": &graphql.Field{
 			Type: graphql.String,
 		},
+		"email": &graphql.Field{
+			Type: graphql.String,
+		},
+		"phone": &graphql.Field{
+			Type: graphql.String,
+		},
 	},
 }))
 

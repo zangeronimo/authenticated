@@ -2,6 +2,8 @@ package graphql
 
 import (
 	"github.com/graphql-go/graphql"
+	"github.com/zangeronimo/authenticated/company"
+	"github.com/zangeronimo/authenticated/db"
 )
 
 // root mutation
@@ -16,15 +18,23 @@ var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 				"name": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.String),
 				},
+				"email": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
+				"phone": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.String),
+				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 
+				var newCompany db.Company
 				// marshall and cast the argument value
-				name, _ := params.Args["name"].(string)
+				newCompany.Name, _ = params.Args["name"].(string)
+				newCompany.Email, _ = params.Args["email"].(string)
+				newCompany.Phone, _ = params.Args["phone"].(string)
 
-				// perform mutation operation here
-				// for e.g. create a Todo and save to DB.
-				return addCompany(name)
+				// Save newCompany to DB
+				return company.NewCompany(newCompany)
 			},
 		},
 		/*

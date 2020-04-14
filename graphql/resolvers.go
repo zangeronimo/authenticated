@@ -1,8 +1,8 @@
 package graphql
 
 import (
-	"github.com/zangeronimo/authenticated/db"
 	"github.com/zangeronimo/authenticated/company"
+	"github.com/zangeronimo/authenticated/db"
 )
 
 func getAllCompanies() ([]db.Company, error) {
@@ -11,8 +11,4 @@ func getAllCompanies() ([]db.Company, error) {
 
 func getOneCompany(id uint) (db.Company, error) {
 	return company.GetOne(id), nil
-}
-
-func addCompany(name string) (db.Company, error) {
-	return company.NewCompany(name), nil
 }
