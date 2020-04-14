@@ -2,10 +2,11 @@ package graphql
 
 import (
 	"math/rand"
-	"time"
 	"strconv"
+	"time"
 
 	"github.com/graphql-go/graphql"
+	"github.com/zangeronimo/authenticated/company"
 )
 
 type Todo struct {
@@ -47,12 +48,12 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Type:        graphql.NewList(companyType),
 			Description: "List of companies",
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				return getAllCompanies()
+				return company.GetAll()
 			},
 		},
 
 		// Return a specific company
-		
+
 		"company": &graphql.Field{
 			Type:        companyType,
 			Description: "Get single company",
@@ -68,7 +69,7 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 					if err != nil {
 						return nil, err
 					}
-					return getOneCompany(uint(id))
+					return company.GetOne(uint(id))
 				}
 				return nil, nil
 			},

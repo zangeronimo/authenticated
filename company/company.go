@@ -4,24 +4,24 @@ import (
 	"github.com/zangeronimo/authenticated/db"
 )
 
-func GetAll() []db.Company {
+// GetAll return all register for company
+func GetAll() (companies []db.Company, err error) {
 	dba := db.Connect()
 	defer dba.Close()
 
-	var companies []db.Company
-	dba.Find(&companies)
+	err = dba.Find(&companies).Error
 
-	return companies
+	return
 }
 
-func GetOne(id uint) db.Company {
+// GetOne retorn a specific company
+func GetOne(id uint) (company db.Company, err error) {
 	dba := db.Connect()
 	defer dba.Close()
 
-	var company db.Company
-	dba.Find(&company, id)
+	err = dba.Find(&company, id).Error
 
-	return company
+	return
 }
 
 // NewCompany receive a company, persist in db and return a company or a error
