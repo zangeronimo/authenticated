@@ -1,7 +1,7 @@
 package company
 
 import (
-	"github.com/zangeronimo/authenticated/db"
+	"github.com/zangeronimo/authenticated/src/db"
 )
 
 // GetAll return all register for company

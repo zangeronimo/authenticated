@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/graphql-go/graphql"
-	"github.com/zangeronimo/authenticated/company"
+	"github.com/zangeronimo/authenticated/src/company"
 )
 
 type Todo struct {

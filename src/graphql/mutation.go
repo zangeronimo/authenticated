@@ -2,8 +2,8 @@ package graphql
 
 import (
 	"github.com/graphql-go/graphql"
-	"github.com/zangeronimo/authenticated/company"
-	"github.com/zangeronimo/authenticated/db"
+	"github.com/zangeronimo/authenticated/src/company"
+	"github.com/zangeronimo/authenticated/src/db"
 )
 
 // root mutation

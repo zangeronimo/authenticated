@@ -1,4 +1,4 @@
-package main
+package authentication
 
 import (
 	"encoding/base64"
@@ -8,53 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zangeronimo/authenticated/db"
-	"github.com/zangeronimo/authenticated/env"
-	gql "github.com/zangeronimo/authenticated/graphql"
-
 	"github.com/dgrijalva/jwt-go"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-//SAMPLESECRET A secret frase
-const SAMPLESECRET string = "Hello JWT"
-
-func main() {
-	// Start env package with global configurations
-	env.New()
-
-	// Start db package to start migration bases
-	db.New()
-
-	//GRAPHQL Server
-	gql.New()
-
-	fmt.Println("The server is running on port 4001")
-	http.ListenAndServe(":4001", nil)
-
-	//GORM EXAMPLE
-	// Create
-	//dbase.Create(&db.User{Name: "Luciano Zangeronimo", Email: "zangeronimo@tudolinux.com.br", Products: []db.Product{{Title: "Authenticated"}}})
-
-	// Read
-	//var user db.User
-	//dbase.First(&user, 1) // find user with id 1
-	//dbase.First(&user, "Name = ?", "Luciano") // find user with name is Luciano
-
-	// Update - update product´s price to 2000
-	//dbase.Model(&user).Update("Products", []db.Product{{Title: "Authenticated"}})
-
-	// Delete - delete product
-	//dbase.Delete(&user)
-
-	//fmt.Println(user.Name)
-
-	//http.HandleFunc("/auth", basicAuth)
-	//http.ListenAndServe(":4001", nil)
-}
-
-func basicAuth(w http.ResponseWriter, r *http.Request) {
+func BasicAuth(w http.ResponseWriter, r *http.Request) {
 	// Check basic login for basic authentication, first stap to generate a JWT
 	auth := strings.SplitN(r.Header.Get("Authorization"), " ", 2)
 
@@ -79,7 +36,7 @@ func basicAuth(w http.ResponseWriter, r *http.Request) {
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
-	tokenString, err := token.SignedString([]byte(SAMPLESECRET))
+	tokenString, err := token.SignedString([]byte(os.Getenv("SAMPLESECRET")))
 
 	fmt.Println(tokenString, err)
 	fmt.Fprintf(w, "Hello, %s - Err %s!", tokenString, err)
